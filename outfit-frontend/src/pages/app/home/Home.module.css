@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.list::-webkit-scrollbar {
+    width: var(--sm);
+    border-radius: var(--sm);
+    background-color: var(--clr-accent);
+
+}
+
+.list::-webkit-scrollbar-thumb {
+    background-color: var(--clr-main);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    ;
+    border-radius: var(--sm);
+}
+
+@media screen and (max-width: 468px) {
+    
+}
