@@ -33,10 +33,19 @@ app.use(cors({ origin }));
 
 app.use('/api/v1', index_router);
 
+app.use(express.static(`uploads`));
+
 // error handling middleware
 app.use((err, req, res, next) => {
   res.status(500).json({
     message: err.message,
+    state: 'error',
+  });
+});
+
+app.all('*', (req, res) => {
+  res.status(404).json({
+    message: 'Route not found',
     state: 'error',
   });
 });

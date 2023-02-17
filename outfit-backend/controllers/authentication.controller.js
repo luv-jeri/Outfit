@@ -28,6 +28,7 @@ module.exports.sign_up = async (req, res, next) => {
       mesaage: 'User created successfully',
     });
   } catch (e) {
+    console.log(e);
     next(e);
   }
 };

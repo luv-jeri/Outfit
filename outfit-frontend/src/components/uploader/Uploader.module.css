@@ -1,0 +1,29 @@
+.file_picker {
+    position: relative;
+    height: var(--xxl);
+    width: var(--xxl);
+    border-radius: var(--md);
+    padding: var(--xxs);
+    border: 1px solid var(--clr-accent);
+}
+
+.file_picker img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: var(--md);
+}
+
+.file_picker input {
+    height: 100%;
+
+    width: 100%;
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    cursor: pointer;
+    opacity: 0;
+}
