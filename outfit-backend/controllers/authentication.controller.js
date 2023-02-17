@@ -4,7 +4,7 @@ const generate_token = require('../utils/generate_token');
 
 module.exports.sign_up = async (req, res, next) => {
   try {
-    const { email, password, confirmPassword, name, role, details } = req.body;
+    const { email, password, confirmPassword, name, role, details , photo } = req.body;
 
     if (password !== confirmPassword) {
       return next(new Error('Password and confirm password do not match'));
@@ -17,6 +17,7 @@ module.exports.sign_up = async (req, res, next) => {
       password: en_password,
       name,
       role,
+      photo,
       details,
     });
 

@@ -3,7 +3,7 @@ import s from './Nav.module.css';
 import { useAuth } from '../../context/Auth.context';
 import { useNavigate } from 'react-router-dom';
 function NavComponent() {
-  const { user } = useAuth();
+  const { user, sign_out } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -27,13 +27,11 @@ function NavComponent() {
           onClick={() => {
             if (!user) {
               handleLogin();
+            } else {
+              sign_out();
             }
           }}
-          src={
-            user
-              ? '../../../public/icons/icons8-clothes-48.svg'
-              : '../../../public/icons/icons8-login-rounded.svg'
-          }
+          src={user ? user.photo : '../../../public/icons/icons8-login-rounded.svg'}
         />
       </div>
     </nav>

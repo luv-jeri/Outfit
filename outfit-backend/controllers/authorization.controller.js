@@ -32,6 +32,7 @@ module.exports.verify_token = async (req, res, next) => {
 module.exports.who_am_i = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
+   
 
     if (!authorization) {
       return next(new Error('You are not logged in'));
@@ -43,7 +44,9 @@ module.exports.who_am_i = async (req, res, next) => {
       return next(new Error('Invalid token'));
     }
 
-    const user = await User.findById(decoded._id);
+    console.log(decoded._doc);
+
+    const user = await User.findById(decoded._doc._id);
 
     if (!user) {
       return next(new Error('User does not exist'));
