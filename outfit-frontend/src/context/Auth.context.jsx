@@ -19,25 +19,11 @@ const AuthProvider = ({ children }) => {
     return token;
   });
 
-  const sign_in = async (email, password) => {
-    console.log('sign_in');
-    const { data } = await axios.post('auth/sign_in', {
-      email,
-      password,
-    });
-
-    localStorage.setItem('outfit-token', data.token);
-
-    setToken(data.token);
-  };
-
   const who_am_i = async () => {
     try {
       const { data } = await axios.get('auth/who_am_i');
       console.log(data);
       setUser(data.data);
-
-      navigate('/');
     } catch (e) {
       console.log(e);
     }
@@ -49,6 +35,17 @@ const AuthProvider = ({ children }) => {
       who_am_i();
     }
   }, [token]);
+
+  const sign_in = async (email, password) => {
+    console.log('sign_in');
+    const { data } = await axios.post('auth/sign_in', {
+      email,
+      password,
+    });
+
+    localStorage.setItem('outfit-token', data.token);
+    setToken(data.token);
+  };
 
   const sign_up = async ({ photo, email, password, confirmPassword, name }) => {
     if (password !== confirmPassword) {

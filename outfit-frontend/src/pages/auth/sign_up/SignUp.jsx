@@ -4,7 +4,6 @@ import { useAuth } from '../../../context/Auth.context';
 import { useNavigate } from 'react-router-dom';
 import UploaderComponent from '../../../components/uploader/Uploader.component';
 
-
 function SignUp() {
   const { sign_up } = useAuth();
   const [name, setName] = useState('');
