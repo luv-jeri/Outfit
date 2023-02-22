@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-
 import { useNavigate } from 'react-router-dom';
+import { useNotification } from './../wrappers/notification/Notification.wrapper';
 const AuthContext = createContext();
 
 const useAuth = () => {
@@ -11,6 +11,7 @@ const useAuth = () => {
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const { showNotification } = useNotification();
   const [token, setToken] = useState(() => {
     const token = localStorage.getItem('outfit-token');
     if (token) {
@@ -37,14 +38,23 @@ const AuthProvider = ({ children }) => {
   }, [token]);
 
   const sign_in = async (email, password) => {
-    console.log('sign_in');
-    const { data } = await axios.post('auth/sign_in', {
-      email,
-      password,
-    });
+    try {
+      console.log('sign_in');
+      const { data } = await axios.post('auth/sign_in', {
+        email,
+        password,
+      });
 
-    localStorage.setItem('outfit-token', data.token);
-    setToken(data.token);
+      localStorage.setItem('outfit-token', data.token);
+      setToken(data.token);
+    } catch (e) {
+      console.log(e);
+      showNotification({
+        title: 'Error',
+        message: e.response.data.message,
+        type: 'error',
+      });
+    }
   };
 
   const sign_up = async ({ photo, email, password, confirmPassword, name }) => {

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "init" : "cd outfit-frontend && npm install && cd .. &&  cd outfit-backend && npm install && cd ..",
+    "init": "cd outfit-frontend && npm install && cd .. &&  cd outfit-backend && npm install && cd ..",
     "dev": "concurrently \"cd outfit-frontend && npm run dev\" \"cd outfit-backend && npm run dev\"",
     "start": "cd outfit-frontend && npm run build && cd .. && concurrently \"cd outfit-backend && npm run start\" \"cd outfit-frontend && npm run preview\""
   },
@@ -13,5 +13,8 @@
   "devDependencies": {
     "concurrently": "^7.6.0"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^9.17.1"
+  }
 }

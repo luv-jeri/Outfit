@@ -1,0 +1,60 @@
+.notification__panel {
+    position: fixed;
+    right: 0;
+    height: 100%;
+    width: 40%;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding: var(--md);
+    justify-content: flex-end;
+    pointer-events: none;
+}
+
+.flyer {
+    border: 2px solid var(--clr-accent);
+    border-radius: var(--xxs);
+    padding: var(--sm);
+    margin: var(--sm);
+    background-color: var(--clr-tone);
+    color: var(--clr-white);
+    /* animation: slide-in 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both; */
+}
+
+.flyer h6 {
+    font-size: var(--sm);
+    font-weight: 600;
+    margin-bottom: var(--xs);
+}
+
+.flyer p {
+    font-size: var(--sm);
+    font-weight: 400;
+}
+
+.slide_in {
+    animation: slide-in 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+.slide_out {
+    animation: slide-out 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+
+@keyframes slide-in {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-out {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(200%);
+    }
+}

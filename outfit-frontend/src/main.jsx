@@ -5,15 +5,18 @@ import App from './App';
 import './index.css';
 import { AuthProvider } from './context/Auth.context';
 import axios from 'axios';
+import { NotificationProvider } from './wrappers/notification/Notification.wrapper';
 
 axios.defaults.baseURL = 'http://localhost:9100/api/v1/';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </BrowserRouter>
+    <NotificationProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </BrowserRouter>
+    </NotificationProvider>
   </React.StrictMode>
 );
