@@ -5,6 +5,7 @@ const {
   update_product,
   delete_product,
   get_product,
+  dummy,
 } = require('../controllers/product.controller');
 const { verify_token } = require('../controllers/authorization.controller');
 
@@ -13,6 +14,8 @@ const product_router = express.Router();
 // product_router.use(verify_token);
 
 product_router.route('/').get(get_all_products).post(add_product);
+
+product_router.route('/set').post(dummy)
 
 product_router
   .route('/:id')

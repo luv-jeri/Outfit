@@ -38,8 +38,9 @@ const AuthProvider = ({ children }) => {
   }, [token]);
 
   const sign_in = async (email, password) => {
+   
     try {
-      console.log('sign_in');
+  
       const { data } = await axios.post('auth/sign_in', {
         email,
         password,

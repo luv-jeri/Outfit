@@ -6,15 +6,12 @@ import Loading from '../../../components/loading/Loading.component';
 import useFetch from '../../../hooks/useFetch';
 
 function Home() {
-  const { data, error, loading } = useFetch('product', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    query: {
-      select: 'title thumbnail price',
-    },
-  });
+  const [page, setPage] = useState(1);
+  const { data, error, loading } = useFetch(`product?page=${page}&limit=10`, null, [
+    page,
+  ]);
+
+  const arrayOfPages = new Array(20).fill('a');
 
   return (
     <header className={s.container}>
@@ -34,6 +31,20 @@ function Home() {
           <Loading />
         )}
       </section>
+      <footer className={s.footer}>
+        {arrayOfPages.map((item, index) => {
+          return (
+            <div
+              className={s.number}
+              onClick={() => {
+                setPage(index + 1);
+              }}
+            >
+              {index + 1}
+            </div>
+          );
+        })}
+      </footer>
     </header>
   );
 }

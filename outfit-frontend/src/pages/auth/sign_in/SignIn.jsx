@@ -13,6 +13,7 @@ function SignIn() {
   const navigate = useNavigate();
 
   const handleClick = (e) => {
+   
     e.preventDefault();
 
     if (!email && !password) {

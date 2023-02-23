@@ -27,6 +27,28 @@
     border-radius: var(--sm);
 }
 
+.footer {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    padding: var(--sm);
+
+}
+
+.footer .number {
+    border: 1px solid var(--clr-accent);
+    padding: 0.3rem;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.footer .number:hover {
+    background-color: var(--clr-accent);
+    color: var(--clr-light);
+}
+
+
+
 @media screen and (max-width: 468px) {
     
 }

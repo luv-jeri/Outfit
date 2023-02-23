@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import s from './Uploader.module.css'; // CSS module';
 import uploadIcon from '../../../public/icons/icons8-add-image.svg';
-import axios from 'axios';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../firebase/index';
 
@@ -52,6 +51,7 @@ function UploaderComponent({ onUpload }) {
   );
 }
 
-
-
 export default UploaderComponent;
+
+
+

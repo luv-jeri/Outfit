@@ -5,7 +5,6 @@ const productSchema = new Schema(
     title: {
       type: String,
       required: [true, 'A product must have a title'],
-      unique: true,
       validate: {
         validator: function (val) {
           return val.length >= 3;
