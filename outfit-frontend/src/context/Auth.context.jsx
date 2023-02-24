@@ -27,6 +27,8 @@ const AuthProvider = ({ children }) => {
       setUser(data.data);
     } catch (e) {
       console.log(e);
+      //! check for all the error codes
+      localStorage.removeItem('outfit-token');
     }
   };
 
@@ -38,9 +40,7 @@ const AuthProvider = ({ children }) => {
   }, [token]);
 
   const sign_in = async (email, password) => {
-   
     try {
-  
       const { data } = await axios.post('auth/sign_in', {
         email,
         password,

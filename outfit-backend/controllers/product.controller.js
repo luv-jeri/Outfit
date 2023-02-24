@@ -44,7 +44,11 @@ const get_product = async (req, res, next) => {
 
 const add_product = async (req, res, next) => {
   try {
-    const product = await Product.create(req.body);
+    const product = await Product.create({
+      ...req.body,
+
+      merchant: req.user._id,
+    });
 
     res.json({
       message: 'Product added',
@@ -60,9 +64,35 @@ const update_product = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const updated_product = await Product.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
+    const product = await Product.findById(id);
+
+    if (product.merchant.toString() !== req.user._id.toString()) {
+      return res.status(401).json({
+        message: 'You are not authorized to update this product',
+      });
+    }
+
+    //! This will hamper speed
+    // const updated_product = await Product.findByIdAndUpdate(
+    //   id,
+    //   {
+    //     $set: {
+    //       title: 'Updated Title',
+    //     },
+    //     $push: {
+    //       images: 'https://images.unsplash.com/photo-1610390000000-1b1b1b1b1b1b',
+    //     },
+    //     $pop: {
+    //       images: 1,
+    //     },
+    //     $inc: {
+    //       price: 10,
+    //     },
+    //   },
+    //   {
+    //     new: true,
+    //   }
+    // );
 
     res.json({
       message: `Product with id: ${id} updated`,
@@ -77,7 +107,13 @@ const update_product = async (req, res, next) => {
 const delete_product = async (req, res, next) => {
   const { id } = req.params;
 
-  await Product.findByIdAndDelete(id);
+  const product = await Product.findByIdAndDelete(id);
+
+  if (product.merchant.toString() !== req.user._id.toString()) {
+    return res.status(401).json({
+      message: 'You are not authorized to delete this product',
+    });
+  }
 
   res.json({
     message: `Product with id: ${id} deleted`,

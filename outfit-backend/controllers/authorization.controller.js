@@ -21,7 +21,7 @@ module.exports.verify_token = async (req, res, next) => {
       return next(new Error('User does not exist'));
     }
 
-    req.user = user;
+    req.user = decoded;
 
     next();
   } catch (e) {
@@ -32,7 +32,6 @@ module.exports.verify_token = async (req, res, next) => {
 module.exports.who_am_i = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
-   
 
     if (!authorization) {
       return next(new Error('You are not logged in'));

@@ -36,7 +36,6 @@ function UploaderComponent({ onUpload }) {
     onUpload(URL);
   };
 
-  console.log(progress);
   useEffect(() => {
     if (file) {
       upload();

@@ -50,6 +50,10 @@ const productSchema = new Schema(
       type: Number,
       default: 0,
     },
+    merchant: {
+      type: Schema.Types.ObjectId,
+      ref : 'User',
+    },
   },
   {
     timestamps: true,

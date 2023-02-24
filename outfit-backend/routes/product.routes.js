@@ -11,16 +11,47 @@ const { verify_token } = require('../controllers/authorization.controller');
 
 const product_router = express.Router();
 
-// product_router.use(verify_token);
+product_router
+  .route('/')
+  .get(get_all_products)
+  .post(
+    verify_token,
+    (req, res, next) => {
+      if (req.user.role === 'merchant') {
+        next();
+      } else {
+        return next(new Error('You are not authorized to perform this action'));
+      }
+    },
+    add_product
+  );
 
-product_router.route('/').get(get_all_products).post(add_product);
-
-product_router.route('/set').post(dummy)
+product_router.route('/set').post(dummy);
 
 product_router
   .route('/:id')
   .get(get_product)
-  .delete(delete_product)
-  .patch(update_product);
+  .delete(
+    verify_token,
+    (req, res, next) => {
+      if (req.user.role === 'merchant') {
+        next();
+      } else {
+        return next(new Error('You are not authorized to perform this action'));
+      }
+    },
+    delete_product
+  )
+  .patch(
+    verify_token,
+    (req, res, next) => {
+      if (req.user.role === 'merchant') {
+        next();
+      } else {
+        return next(new Error('You are not authorized to perform this action'));
+      }
+    },
+    update_product
+  );
 
 module.exports = product_router;
