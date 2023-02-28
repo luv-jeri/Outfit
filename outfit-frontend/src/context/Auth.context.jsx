@@ -2,6 +2,8 @@ import { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useNotification } from './../wrappers/notification/Notification.wrapper';
+import { useDispatch } from 'react-redux';
+import { setCart } from '../store/cartSlice';
 const AuthContext = createContext();
 
 const useAuth = () => {
@@ -10,6 +12,7 @@ const useAuth = () => {
 
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [user, setUser] = useState(null);
   const { showNotification } = useNotification();
   const [token, setToken] = useState(() => {
@@ -25,6 +28,7 @@ const AuthProvider = ({ children }) => {
       const { data } = await axios.get('auth/who_am_i');
       console.log(data);
       setUser(data.data);
+      dispatch(setCart(data.data.cart));
     } catch (e) {
       console.log(e);
       //! check for all the error codes

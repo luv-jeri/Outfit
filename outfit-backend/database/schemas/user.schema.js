@@ -1,6 +1,6 @@
 const { Schema } = require('mongoose');
 const validator = require('validator');
-
+const productSchema = require('./product.schema');
 const userSchema = new Schema(
   {
     name: {
@@ -50,19 +50,22 @@ const userSchema = new Schema(
     details: {
       type: Schema.Types.Mixed,
     },
+    cart: [
+      {
+        product: {
+          type: Schema.Types.ObjectId,
+          ref: 'Product',
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
-
-// userSchema.pre('save', async function (next) {
-//   if (!this.isModified('password')) return next();
-
-//   this.password = await bcrypt.hash(this.password, 12);
-//   this.confirmPassword = undefined;
-
-//   next();
-// });
 
 module.exports = userSchema;

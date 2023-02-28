@@ -6,6 +6,7 @@ const {
   delete_product,
   get_product,
   dummy,
+  look_up,
 } = require('../controllers/product.controller');
 const { verify_token } = require('../controllers/authorization.controller');
 
@@ -27,6 +28,7 @@ product_router
   );
 
 product_router.route('/set').post(dummy);
+product_router.route('/look_up/:search').get(look_up);
 
 product_router
   .route('/:id')

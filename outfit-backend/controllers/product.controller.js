@@ -16,7 +16,15 @@ const get_all_products = async (req, res, next) => {
     select = select ? select.split(',').join(' ') : '';
     const skip = (page - 1) * limit;
 
-    let products = await Product.find().select(select).limit(limit).skip(skip);
+    let products = await Product.find({
+      merchant: {
+        $exists: true,
+      },
+    })
+      .select(select)
+      .limit(limit)
+      .skip(skip)
+   
 
     res.json({
       state: 'success',
@@ -192,6 +200,33 @@ const dummy = async (req, res, next) => {
   });
 };
 
+const look_up = async (req, res, next) => {
+  const { search } = req.params;
+
+  const products = await Product.find({
+    $or: [
+      {
+        title: {
+          $regex: search,
+          $options: 'i',
+        },
+      },
+      {
+        description: {
+          $regex: search,
+          $options: 'i',
+        },
+      },
+    ],
+  });
+
+  res.json({
+    message: 'Look up',
+    state: 'success',
+    data: products,
+  });
+};
+
 module.exports = {
   get_all_products,
   add_product,
@@ -199,4 +234,5 @@ module.exports = {
   delete_product,
   get_product,
   dummy,
+  look_up,
 };

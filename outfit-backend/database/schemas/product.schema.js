@@ -52,12 +52,16 @@ const productSchema = new Schema(
     },
     merchant: {
       type: Schema.Types.ObjectId,
-      ref : 'User',
+      ref: 'User',
     },
   },
   {
     timestamps: true,
   }
 );
+
+productSchema.index({
+  description: 'text',
+});
 
 module.exports = productSchema;

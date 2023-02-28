@@ -1,6 +1,9 @@
 const express = require('express');
+
 const auth_router = require('./auth.routes');
 const product_router = require('./product.routes');
+const cart_router = require('./cart.routes');
+const payment_router = require('./payment.routes');
 const multer = require('multer');
 const os = require('os');
 
@@ -8,6 +11,9 @@ const index_router = express.Router();
 
 index_router.use('/auth', auth_router);
 index_router.use('/product', product_router);
+index_router.use('/cart', cart_router);
+index_router.use('/payment', payment_router);
+
 
 const getIPAddress = () => {
   const interfaces = os.networkInterfaces();
@@ -44,3 +50,4 @@ index_router.post('/upload', uploader.single('image'), (req, res) => {
 });
 
 module.exports = index_router;
+

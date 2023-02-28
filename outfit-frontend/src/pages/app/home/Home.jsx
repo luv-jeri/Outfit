@@ -4,14 +4,28 @@ import s from './Home.module.css';
 import ProductCardComponent from '../../../components/product_card/ProductCard.component';
 import Loading from '../../../components/loading/Loading.component';
 import useFetch from '../../../hooks/useFetch';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchProducts } from '../../../store/productSlice';
 
 function Home() {
   const [page, setPage] = useState(1);
-  const { data, error, loading } = useFetch(`product?page=${page}&limit=10`, null, [
-    page,
-  ]);
+
+  // const { data, error, loading } = useFetch(`product?page=${page}&limit=10`, null, [
+  //   page,
+  // ]);
 
   const arrayOfPages = new Array(20).fill('a');
+  const { data, loading, error } = useSelector((state) => state.products);
+  const cart = useSelector((state) => state);
+  console.log("cart", cart)
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(
+      fetchProducts({
+        page,
+      })
+    );
+  }, [page]);
 
   return (
     <header className={s.container}>
@@ -35,6 +49,7 @@ function Home() {
         {arrayOfPages.map((item, index) => {
           return (
             <div
+              key={index}
               className={s.number}
               onClick={() => {
                 setPage(index + 1);
