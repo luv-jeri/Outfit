@@ -1,5 +1,9 @@
 const Razorpay = require('razorpay');
 const Order = require('../database/models/order.model');
+const Contract = require('../database/models/contract.model');
+const Product = require('../database/models/product.model');
+const User = require('../database/models/user.model');
+
 var crypto = require('crypto');
 
 const razor_pay = new Razorpay({
@@ -8,7 +12,7 @@ const razor_pay = new Razorpay({
 });
 
 module.exports.create_razor_pay_order = async (req, res, next) => {
-  const { orders } = razor_pay;
+  const { orders, cart } = razor_pay;
 
   // calculate total amount
 
@@ -21,6 +25,7 @@ module.exports.create_razor_pay_order = async (req, res, next) => {
         payment_type: 'for clothes',
         frontend: 'react-outfit',
       },
+      cart,
     },
     (err, order) => {
       if (err) {
@@ -37,31 +42,35 @@ module.exports.create_razor_pay_order = async (req, res, next) => {
 };
 
 module.exports.verify_razor_pay_payment = async (req, res, next) => {
-  const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, cart } = req.body;
 
-  const toHash = razorpay_order_id + '|' + razorpay_payment_id;
+  const contracts = [];
 
-  var expectedSignature = crypto
-    .createHmac('sha256', 'Ym97sPjMAv8USQB5UFmHooSb')
-    .update(toHash.toString())
-    .digest('hex');
-
-  if (expectedSignature === razorpay_signature) {
-    console.log('payment successful');
-
-    // const newOrder = await Order.create({
-    //   razorpay_payment_id,
-    //   razorpay_order_id,
-    //   razorpay_signature,
-    // });
-
-    res.json({
-      message: 'Payment successful',
+  cart.forEach(async (item) => {
+    const contract = await Contract.create({
+      user: req.user._id,
+      merchant: item.merchant,
+      status: 'pending',
+      product: item.product,
+      quantity: item.quantity,
     });
-  } else {
-    console.log('payment failed');
-    res.json({
-      message: 'Payment failed',
-    });
-  }
+
+    contracts.push(contract._id);
+  });
+
+  const newOrder = new Order({
+    user: req.user._id,
+    contract: contracts,
+    total: 500,
+    address: 'test address',
+    dateOfOrder: Date.now(),
+    paymentStatus: 'paid',
+    paymentMode: 'card',
+  });
+
+  const order = await newOrder.save();
+
+  res.json({
+    order,
+  });
 };

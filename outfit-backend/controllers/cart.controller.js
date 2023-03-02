@@ -10,11 +10,11 @@ const add_to_cart = async (req, res, next) => {
     const { cart } = user;
 
     // check if product is already in cart
-    const product = cart.find((product) => product.product_id === id);
+    const productIndex = cart.findIndex((product) => product.product_id === id);
 
-    if (product) {
+    if (productIndex !== -1) {
       // if product is in cart, increase quantity
-      user.cart.product.quantity += 1;
+      user.cart[productIndex].quantity += 1;
     } else {
       // if product is not in cart, add it to cart
       user.cart.push({ product_id: id, quantity: 1 });
@@ -25,6 +25,7 @@ const add_to_cart = async (req, res, next) => {
     res.status(200).json({
       status: 'success',
       message: 'Product added to cart',
+      data: user.cart,
     });
   } catch (e) {
     next(e);
@@ -51,21 +52,16 @@ const remove_from_cart = async (req, res, next) => {
     const { cart } = user;
 
     // check if product is already in cart
-    const product = cart.find((product) => product.product_id === id);
+    const productIndex = cart.findIndex((product) => product.product_id === id);
 
-    if (product) {
+    if (productIndex !== -1) {
       // if product is in cart, decrease quantity
-      user.cart.product.quantity -= 1;
+      user.cart[productIndex].quantity -= 1;
 
       // if quantity is 0, remove product from cart
       if (user.cart.product.quantity === 0) {
-        user.cart = user.cart.filter(
-          (product) => product.product !== id
-        );
+        user.cart = user.cart.filter((product) => product.product !== id);
       }
-    } else {
-      // if product is not in cart, add it to cart
-      user.cart.push({ product_id: id, quantity: 1 });
     }
 
     await user.save();
@@ -73,6 +69,7 @@ const remove_from_cart = async (req, res, next) => {
     res.status(200).json({
       status: 'success',
       message: 'Product removed from cart',
+      data: user.cart,
     });
   } catch (e) {
     next(e);
@@ -100,4 +97,4 @@ module.exports = {
   get_cart,
   remove_from_cart,
   clear_cart,
-}
+};

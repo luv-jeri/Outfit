@@ -10,4 +10,9 @@ const store = configureStore({
   },
 });
 
+store.subscribe(() => {
+  const { cart } = store.getState();
+  console.log(cart);
+});
+
 export default store;

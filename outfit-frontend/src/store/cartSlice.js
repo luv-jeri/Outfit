@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
   data: [],
@@ -7,11 +8,26 @@ const initialState = {
   loading: false,
 };
 
+export const addToCart = createAsyncThunk('cart/addToCart', async (parameters) => {
+  const { id } = parameters;
+  const { data } = await axios.post(`cart/${id}`);
+  return data.data;
+});
+
+export const removeFromCart = createAsyncThunk(
+  'cart/removeFromCart',
+  async (parameters) => {
+    const { id } = parameters;
+    const { data } = await axios.delete(`cart/${id}`);
+    return data.data;
+  }
+);
+
 export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, action) => {
+    add: (state, action) => {
       const item = action.payload;
       const index = state.data.findIndex((i) => i.id === item.id);
       if (index === -1) {
@@ -23,7 +39,7 @@ export const cartSlice = createSlice({
         state.data[index].quantity += 1;
       }
     },
-    removeFromCart: (state, action) => {
+    remove: (state, action) => {
       const item = action.payload;
       const index = state.data.findIndex((i) => i.id === item.id);
       if (index !== -1) {
@@ -40,7 +56,31 @@ export const cartSlice = createSlice({
       state.data = action.payload;
     },
   },
+
+  extraReducers: (builder) => {
+    builder.addCase(addToCart.pending, (state, action) => {
+      state.status = 'loading';
+    });
+    builder.addCase(addToCart.fulfilled, (state, action) => {
+      state.status = 'succeeded';
+      state.data = action.payload;
+    });
+    builder.addCase(addToCart.rejected, (state, action) => {
+      state.status = 'failed';
+    });
+    builder.addCase(removeFromCart.pending, (state, action) => {
+      state.status = 'loading';
+    });
+    builder.addCase(removeFromCart.fulfilled, (state, action) => {
+      state.status = 'succeeded';
+      state.data = action.payload;
+    });
+    builder.addCase(removeFromCart.rejected, (state, action) => {
+      state.status = 'failed';
+      state.error = action.payload;
+    });
+  },
 });
 
-export const { addToCart, removeFromCart, setCart } = cartSlice.actions;
+export const { add, remove, setCart } = cartSlice.actions;
 export default cartSlice.reducer;

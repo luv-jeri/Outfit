@@ -5,6 +5,9 @@ import useFetch from '../../../hooks/useFetch';
 import Loading from '../../../components/loading/Loading.component';
 import axios from 'axios';
 import { useAuth } from '../../../context/Auth.context';
+import { useDispatch } from 'react-redux';
+import { setCart, add, remove } from '../../../store/cartSlice';
+
 
 function ProductDetails() {
   const { id } = useParams();
@@ -55,6 +58,18 @@ function ProductDetails() {
     razor_pay_ui.open();
   };
 
+  const dispatch = useDispatch();
+
+  const addToCartHandler = async () => {
+    try {
+      dispatch(add({ id }));
+      await axios.post(`cart/${id}`);
+    } catch (e) {
+      dispatch(remove({ id }));
+      console.log(e);
+    }
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -71,6 +86,9 @@ function ProductDetails() {
       </div>
       <button onClick={buyNow} className={s.btn}>
         Buy Now
+      </button>
+      <button onClick={addToCartHandler} className={s.btn}>
+        Add to cart
       </button>
     </div>
   );

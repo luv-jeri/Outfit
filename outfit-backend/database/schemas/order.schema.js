@@ -6,20 +6,15 @@ const orderSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
-    product: [
+    contract: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Product',
+        ref: 'Contract',
       },
     ],
     total: {
       type: Number,
       required: [true, 'A order must have a total'],
-    },
-    status: {
-      type: String,
-      required: [true, 'A order must have a status'],
-      enum: ['pending', 'shipped', 'delivered'],
     },
     address: {
       type: String,
@@ -28,12 +23,6 @@ const orderSchema = new Schema(
     dateOfOrder: {
       type: Date,
       default: Date.now(),
-    },
-    deliveryDate: {
-      type: Date,
-    },
-    shippedDate: {
-      type: Date,
     },
     paymentStatus: {
       type: String,
