@@ -1,0 +1,1 @@
+const catcher = async (fn) => {}

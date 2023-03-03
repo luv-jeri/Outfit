@@ -1,8 +1,6 @@
 const Razorpay = require('razorpay');
 const Order = require('../database/models/order.model');
 const Contract = require('../database/models/contract.model');
-const Product = require('../database/models/product.model');
-const User = require('../database/models/user.model');
 
 var crypto = require('crypto');
 
@@ -13,8 +11,6 @@ const razor_pay = new Razorpay({
 
 module.exports.create_razor_pay_order = async (req, res, next) => {
   const { orders, cart } = razor_pay;
-
-  // calculate total amount
 
   orders.create(
     {

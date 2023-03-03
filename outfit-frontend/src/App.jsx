@@ -7,6 +7,8 @@ import Cart from './pages/app/cart/Cart';
 import Profile from './pages/app/profile/Profile';
 import SignIn from './pages/auth/sign_in/SignIn';
 import SignUp from './pages/auth/sign_up/SignUp';
+import SendOtp from './pages/auth/send_otp/SendOTP';
+import ResetPassword from './pages/auth/reset_password/ResetPassword';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path='/profile/:id' element={<Profile />} />
         <Route path='/sign_in' element={<SignIn />} />
         <Route path='/sign_up' element={<SignUp />} />
+        <Route path='/send_otp' element={<SendOtp />} />
+        <Route path='/reset_password' element={<ResetPassword />} />
       </Routes>
     </div>
   );

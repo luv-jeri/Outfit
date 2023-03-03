@@ -13,7 +13,6 @@ function SignIn() {
   const navigate = useNavigate();
 
   const handleClick = (e) => {
-   
     e.preventDefault();
 
     if (!email && !password) {
@@ -59,6 +58,13 @@ function SignIn() {
             Sign In
           </button>
           <h6 onClick={handleNavigate}>Not a user ?</h6>
+          <h6
+            onClick={() => {
+              navigate('/send_otp');
+            }}
+          >
+            Forgot Password ?
+          </h6>
         </form>
       </div>
     </div>

@@ -22,16 +22,6 @@ const userSchema = new Schema(
       required: [true, 'A user must have a password'],
       minlength: [8, 'Password must be at least 8 characters long'],
     },
-    //   type: String,
-    //   required: [true, 'A user must have a password'],
-    //   minlength: [8, 'Password must be at least 8 characters long'],
-    //   // validate: {
-    //   //   validator: function (value) {
-    //   //     return value === this.password;
-    //   //   },
-    //   //   message: 'Passwords do not match',
-    //   // },
-    // },
     photo: {
       type: String,
       validate: {
@@ -62,6 +52,12 @@ const userSchema = new Schema(
         },
       },
     ],
+    OTP: {
+      type: Number,
+    },
+    OTPExpires: {
+      type: Date,
+    },
   },
   {
     timestamps: true,

@@ -92,11 +92,64 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const send_reset_otp_email = async (email) => {
+    try {
+      const { data } = await axios.post('/reset/send_otp', { email });
+
+      showNotification({
+        title: 'Success',
+        message: data.message,
+        type: 'success',
+      });
+
+      navigate('/reset_password', {
+        state: {
+          email,
+        },
+      });
+    } catch (e) {
+      showNotification({
+        title: 'Error',
+        message: e.response.data.message,
+        type: 'error',
+      });
+      throw e;
+    }
+  };
+
+  const reset_password = async (email, otp, password) => {
+    try {
+      const { data } = await axios.post('/reset/reset_password', {
+        email,
+        OTP: otp,
+        password,
+        confirmPassword: password,
+      });
+
+      showNotification({
+        title: 'Success',
+        message: data.message,
+        type: 'success',
+      });
+
+      navigate('/sign_in');
+    } catch (e) {
+      showNotification({
+        title: 'Error',
+        message: e.response.data.message,
+        type: 'error',
+      });
+      console.log(e);
+    }
+  };
+
   const value = {
     user,
     sign_in,
     sign_out,
     sign_up,
+    send_reset_otp_email,
+    reset_password,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
