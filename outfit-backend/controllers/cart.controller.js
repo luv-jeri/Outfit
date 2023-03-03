@@ -59,7 +59,9 @@ const remove_from_cart = async (req, res, next) => {
       user.cart[productIndex].quantity -= 1;
 
       // if quantity is 0, remove product from cart
-      if (user.cart.product.quantity === 0) {
+      console.log(typeof user.cart[productIndex].quantity)
+      
+      if (user.cart[productIndex].quantity === 0) {
         user.cart = user.cart.filter((product) => product.product !== id);
       }
     }
