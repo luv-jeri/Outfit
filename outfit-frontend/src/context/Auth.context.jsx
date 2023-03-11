@@ -30,7 +30,6 @@ const AuthProvider = ({ children }) => {
       console.log(data);
       setUser(data.data);
       dispatch(setCart(data.data.cart));
-
       if (location.pathname === '/sign_in' || location.pathname === '/sign_up') {
         navigate('/');
       }

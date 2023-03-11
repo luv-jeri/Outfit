@@ -25,6 +25,10 @@ function Cart() {
     })();
   }, []);
 
+  const handleRemove = async (id) => {
+    console.log('remove');
+  };
+
   console.log(cart);
   return (
     <div className={s.container}>
@@ -43,7 +47,13 @@ function Cart() {
                 <p>{item.product.price}</p>
               </div>
               <div className={s.quantity}>
-                <button>-</button>
+                <button
+                  onClick={() => {
+                    handleRemove(item.product._id);
+                  }}
+                >
+                  -
+                </button>
                 <p>{item.quantity}</p>
                 <button>+</button>
               </div>

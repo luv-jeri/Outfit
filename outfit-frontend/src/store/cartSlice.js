@@ -56,7 +56,6 @@ export const cartSlice = createSlice({
       state.data = action.payload;
     },
   },
-
   extraReducers: (builder) => {
     builder.addCase(addToCart.pending, (state, action) => {
       state.status = 'loading';

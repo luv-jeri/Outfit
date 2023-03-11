@@ -64,7 +64,7 @@ function ProductDetails() {
   const addToCartHandler = async () => {
     try {
       dispatch(add({ id }));
-      await axios.post(`/cart/${id}`);
+      await axios.post(`cart/${id}`);
     } catch (e) {
       dispatch(remove({ id }));
       console.log(e);
