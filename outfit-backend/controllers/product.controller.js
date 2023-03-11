@@ -38,8 +38,9 @@ const get_all_products = async (req, res, next) => {
     })
       .select(select)
       .limit(limit)
-      .skip(skip);
-
+      .skip(skip)
+      .sort(req.query.sort || '-createdAt');
+      
     res.json({
       state: 'success',
       data: products,

@@ -5,6 +5,8 @@ const product_router = require('./product.routes');
 const cart_router = require('./cart.routes');
 const payment_router = require('./payment.routes');
 const reset_router = require('./reset.routes');
+const order_router = require('./order.routes');
+const contract_router = require('./contract.routes');
 const multer = require('multer');
 const os = require('os');
 
@@ -14,7 +16,9 @@ index_router.use('/auth', auth_router);
 index_router.use('/product', product_router);
 index_router.use('/cart', cart_router);
 index_router.use('/payment', payment_router);
+index_router.use('/order', order_router);
 index_router.use('/reset', reset_router);
+index_router.use('/contract', contract_router);
 
 const getIPAddress = () => {
   const interfaces = os.networkInterfaces();

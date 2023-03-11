@@ -69,6 +69,7 @@ module.exports.verify_razor_pay_payment = async (req, res, next) => {
   const order = await Order.create({
     user: req.user._id,
     total: totalPrice,
+    razorpayOrderId: razorpay_order_id,
     address: 'test address',
     dateOfOrder: Date.now(),
     paymentMode: payment.method,
@@ -88,9 +89,11 @@ module.exports.verify_razor_pay_payment = async (req, res, next) => {
     order.contracts.push(contract._id);
   }
 
-  console.log(order);
-  
   await order.save();
+
+  user.cart = [];
+
+  await user.save();
 
   res.json({
     order,

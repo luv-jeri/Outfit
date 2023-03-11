@@ -6,6 +6,9 @@ const orderSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
+    razorpayOrderId: {
+      type: String,
+    },
     contracts: [
       {
         type: Schema.Types.ObjectId,
