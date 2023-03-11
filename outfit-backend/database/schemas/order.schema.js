@@ -6,7 +6,7 @@ const orderSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
-    contract: [
+    contracts: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Contract',
@@ -24,15 +24,8 @@ const orderSchema = new Schema(
       type: Date,
       default: Date.now(),
     },
-    paymentStatus: {
-      type: String,
-      required: [true, 'A order must have a payment status'],
-      enum: ['pending', 'paid'],
-    },
     paymentMode: {
       type: String,
-      required: [true, 'A order must have a payment mode'],
-      enum: ['cash', 'card'],
     },
   },
   {

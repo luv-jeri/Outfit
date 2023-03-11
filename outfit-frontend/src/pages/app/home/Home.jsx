@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import NavComponent from '../../../components/nav/Nav.component';
 import s from './Home.module.css';
 import ProductCardComponent from '../../../components/product_card/ProductCard.component';
@@ -13,11 +13,16 @@ function Home() {
   //   page,
   // ]);
 
-  const arrayOfPages = new Array(20).fill('a');
+  const arrayOfPages = useMemo(() => {
+    return new Array(20).fill('a');
+  });
+
   const { data, loading, error } = useSelector((state) => state.products);
+  
   const cart = useSelector((state) => state);
-  console.log('cart', cart);
+
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(
       fetchProducts({
@@ -25,8 +30,6 @@ function Home() {
       })
     );
   }, [page]);
-
-  
 
   return (
     <header className={s.container}>

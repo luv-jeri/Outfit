@@ -10,14 +10,15 @@ const add_to_cart = async (req, res, next) => {
     const { cart } = user;
 
     // check if product is already in cart
-    const productIndex = cart.findIndex((product) => product.product_id === id);
+    const productIndex = cart.findIndex((product) => {
+      return product.id.toString() === id;
+    });
 
-    if (productIndex !== -1) {
-      // if product is in cart, increase quantity
-      user.cart[productIndex].quantity += 1;
+    if (productIndex === -1) {
+      user.cart.push({ id, quantity: 1 });
     } else {
-      // if product is not in cart, add it to cart
-      user.cart.push({ product_id: id, quantity: 1 });
+      console.log('product is not in cart');
+      user.cart[productIndex].quantity += 1;
     }
 
     await user.save();
@@ -28,12 +29,18 @@ const add_to_cart = async (req, res, next) => {
       data: user.cart,
     });
   } catch (e) {
+    console.log(e);
     next(e);
   }
 };
+
 const get_cart = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id).populate('cart.product');
+    const user = await User.findById(req.user._id).populate({
+      path: 'cart.id',
+    });
+
+    console.log(user.cart);
 
     res.status(200).json({
       status: 'success',
@@ -43,6 +50,7 @@ const get_cart = async (req, res, next) => {
     next(e);
   }
 };
+
 const remove_from_cart = async (req, res, next) => {
   const { id } = req.params;
 
@@ -59,8 +67,8 @@ const remove_from_cart = async (req, res, next) => {
       user.cart[productIndex].quantity -= 1;
 
       // if quantity is 0, remove product from cart
-      console.log(typeof user.cart[productIndex].quantity)
-      
+      console.log(typeof user.cart[productIndex].quantity);
+
       if (user.cart[productIndex].quantity === 0) {
         user.cart = user.cart.filter((product) => product.product !== id);
       }
@@ -77,6 +85,7 @@ const remove_from_cart = async (req, res, next) => {
     next(e);
   }
 };
+
 const clear_cart = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);

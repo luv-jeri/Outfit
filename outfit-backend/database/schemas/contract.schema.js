@@ -2,19 +2,9 @@ const { Schema } = require('mongoose');
 
 const contractSchema = new Schema(
   {
-    user: {
+    order: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
-    },
-    merchant: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-    },
-    status: {
-      type: String,
-      required: [true, 'A contract must have a status'],
-      enum: ['pending', 'dispached', 'delivered', 'cancelled'],
-      default: 'pending',
+      ref: 'Order',
     },
     product: {
       type: Schema.Types.ObjectId,
@@ -22,7 +12,20 @@ const contractSchema = new Schema(
     },
     quantity: {
       type: Number,
-      required: [true, 'A contract must have a quantity'],
+    },
+    total: {
+      type: Number,
+    },
+    priceSingle: {
+      type: Number,
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'accepted', 'rejected'],
+    },
+    merchant: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
     },
   },
   {

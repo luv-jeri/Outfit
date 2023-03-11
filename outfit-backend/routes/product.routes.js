@@ -8,26 +8,16 @@ const {
   dummy,
   look_up,
 } = require('../controllers/product.controller');
-const { verify_token } = require('../controllers/authorization.controller');
+const { verify_token, restrict_to } = require('../controllers/authorization.controller');
 
 const product_router = express.Router();
 
 product_router
   .route('/')
   .get(get_all_products)
-  .post(
-    verify_token,
-    (req, res, next) => {
-      if (req.user.role === 'merchant') {
-        next();
-      } else {
-        return next(new Error('You are not authorized to perform this action'));
-      }
-    },
-    add_product
-  );
+  .post(verify_token, restrict_to('merchant'), add_product);
 
-product_router.route('/set').post(dummy);
+product_router.route('/set').post(verify_token, restrict_to('merchant'), dummy);
 product_router.route('/look_up/:search').get(look_up);
 
 product_router

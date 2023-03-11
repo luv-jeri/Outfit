@@ -1,4 +1,19 @@
 const Product = require('../database/models/product.model');
+const axios = require('axios');
+const https = require('https');
+const followRedirects = require('follow-redirects');
+const util = require('util');
+
+const getRedirectedUrl = (url, options) => {
+  return new Promise((resolve, reject) => {
+    const req = followRedirects.https.get(url, options, (res) => {
+      resolve(res.responseUrl);
+    });
+    req.on('error', (error) => {
+      reject(error);
+    });
+  });
+};
 
 const get_all_products = async (req, res, next) => {
   try {
@@ -23,8 +38,7 @@ const get_all_products = async (req, res, next) => {
     })
       .select(select)
       .limit(limit)
-      .skip(skip)
-   
+      .skip(skip);
 
     res.json({
       state: 'success',
@@ -129,7 +143,24 @@ const delete_product = async (req, res, next) => {
   });
 };
 
-function generateProductArray() {
+async function generateProductArray(id) {
+  const url = 'https://picsum.photos/200/300';
+  const options = {
+    method: 'GET',
+    headers: {
+      'User-Agent': 'Mozilla/5.0',
+    },
+  };
+
+  const imagesPromise = [];
+
+  for (let i = 0; i < 500; i++) {
+    const image = getRedirectedUrl(url, options);
+    imagesPromise.push(image);
+  }
+
+  const imagesURLs = await Promise.all(imagesPromise);
+
   const titles = [
     'Luxury Watch',
     'Leather Handbag',
@@ -153,21 +184,19 @@ function generateProductArray() {
   for (let i = 0; i < 1000; i++) {
     // Generate a random number between 0 and 4 to select a title, description, brand, and category
     const randomIndex = Math.floor(Math.random() * 5);
-
     // Generate a random price between 10 and 100
     const price = Math.floor(Math.random() * 91) + 10;
 
     // Generate an array of random images with a length between 1 and 5
     const images = [];
-    const numImages = Math.floor(Math.random() * 5) + 1;
-    for (let j = 0; j < numImages; j++) {
-      const imageIndex = Math.floor(Math.random() * 10) + 1;
-      images.push(`https://picsum.photos/200/300`);
+
+    for (let j = 0; j < 5; j++) {
+      const randomIndex = Math.floor(Math.random() * 300);
+      images.push(imagesURLs[randomIndex]);
     }
 
     // Generate a random thumbnail image URL
-    const thumbnailIndex = Math.floor(Math.random() * 10) + 1;
-    const thumbnail = `https://picsum.photos/200/300`;
+    const thumbnail = imagesURLs[Math.floor(Math.random() * 300)];
 
     // Create a new product object with the generated properties
     const product = {
@@ -178,9 +207,11 @@ function generateProductArray() {
       thumbnail: thumbnail,
       brand: brands[randomIndex],
       category: categories[randomIndex],
+      merchant: id,
     };
 
     // Add the new product object to the products array
+    console.log(product);
     products.push(product);
   }
 
@@ -189,7 +220,15 @@ function generateProductArray() {
 }
 
 const dummy = async (req, res, next) => {
-  const products = generateProductArray();
+  const { user } = req;
+
+  if (!user) {
+    return res.status(401).json({
+      message: 'You are not authorized to perform this action',
+    });
+  }
+
+  const products = await generateProductArray(user._id);
 
   const data = await Product.insertMany(products);
 

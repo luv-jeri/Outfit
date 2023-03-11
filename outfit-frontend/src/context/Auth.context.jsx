@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useNotification } from './../wrappers/notification/Notification.wrapper';
 import { useDispatch } from 'react-redux';
 import { setCart } from '../store/cartSlice';
@@ -12,6 +12,7 @@ const useAuth = () => {
 
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const [user, setUser] = useState(null);
   const { showNotification } = useNotification();
@@ -29,6 +30,10 @@ const AuthProvider = ({ children }) => {
       console.log(data);
       setUser(data.data);
       dispatch(setCart(data.data.cart));
+
+      if (location.pathname === '/sign_in' || location.pathname === '/sign_up') {
+        navigate('/');
+      }
     } catch (e) {
       console.log(e);
       //! check for all the error codes
@@ -148,6 +153,7 @@ const AuthProvider = ({ children }) => {
     sign_in,
     sign_out,
     sign_up,
+    setUser,
     send_reset_otp_email,
     reset_password,
   };

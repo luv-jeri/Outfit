@@ -8,7 +8,6 @@ const reset_router = require('./reset.routes');
 const multer = require('multer');
 const os = require('os');
 
-
 const index_router = express.Router();
 
 index_router.use('/auth', auth_router);
@@ -16,7 +15,6 @@ index_router.use('/product', product_router);
 index_router.use('/cart', cart_router);
 index_router.use('/payment', payment_router);
 index_router.use('/reset', reset_router);
-
 
 const getIPAddress = () => {
   const interfaces = os.networkInterfaces();
@@ -53,4 +51,3 @@ index_router.post('/upload', uploader.single('image'), (req, res) => {
 });
 
 module.exports = index_router;
-

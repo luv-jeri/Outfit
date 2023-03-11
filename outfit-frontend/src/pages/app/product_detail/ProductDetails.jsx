@@ -5,9 +5,8 @@ import useFetch from '../../../hooks/useFetch';
 import Loading from '../../../components/loading/Loading.component';
 import axios from 'axios';
 import { useAuth } from '../../../context/Auth.context';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setCart, add, remove } from '../../../store/cartSlice';
-
 
 function ProductDetails() {
   const { id } = useParams();
@@ -59,11 +58,13 @@ function ProductDetails() {
   };
 
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
+  console.log('cart', cart);
 
   const addToCartHandler = async () => {
     try {
       dispatch(add({ id }));
-      await axios.post(`cart/${id}`);
+      await axios.post(`/cart/${id}`);
     } catch (e) {
       dispatch(remove({ id }));
       console.log(e);
@@ -89,6 +90,9 @@ function ProductDetails() {
       </button>
       <button onClick={addToCartHandler} className={s.btn}>
         Add to cart
+      </button>
+      <button onClick={addToCartHandler} className={s.btn}>
+        Remove to cart
       </button>
     </div>
   );

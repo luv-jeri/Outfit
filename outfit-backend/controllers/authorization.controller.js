@@ -10,18 +10,14 @@ module.exports.verify_token = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(authorization, process.env.JWT_SECRET);
-
-    if (!decoded) {
-      return next(new Error('Invalid token'));
-    }
-
-    const user = await User.findById(decoded._id);
+    const _id = decoded._doc._id || decoded.id;
+    const user = await User.findById(_id);
 
     if (!user) {
       return next(new Error('User does not exist'));
     }
 
-    req.user = decoded;
+    req.user = user._doc
 
     next();
   } catch (e) {
@@ -58,4 +54,14 @@ module.exports.who_am_i = async (req, res, next) => {
   } catch (e) {
     next(e);
   }
+};
+
+module.exports.restrict_to = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(new Error('You do not have permission to perform this action'));
+    }
+
+    next();
+  };
 };

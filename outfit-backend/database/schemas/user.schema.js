@@ -24,10 +24,6 @@ const userSchema = new Schema(
     },
     photo: {
       type: String,
-      validate: {
-        validator: validator.isURL,
-        message: 'Photo must be a valid URL',
-      },
       default:
         'https://w7.pngwing.com/pngs/419/473/png-transparent-computer-icons-user-profile-login-user-heroes-sphere-black-thumbnail.png',
     },
@@ -42,7 +38,7 @@ const userSchema = new Schema(
     },
     cart: [
       {
-        product_id: {
+        id: {
           type: Schema.Types.ObjectId,
           ref: 'Product',
         },
@@ -56,6 +52,12 @@ const userSchema = new Schema(
       type: Number,
     },
     OTPExpires: {
+      type: Date,
+    },
+    resetToken: {
+      type: String,
+    },
+    resetTokenExpires: {
       type: Date,
     },
   },

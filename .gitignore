@@ -22,3 +22,63 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+
+
+Auth -> JWT -> User [ SignUp, SignIm, Reset Password  ]
+Authoratization -> Protected Routes
+
+REST API
+
+USER POST -> 
+Create {
+  user,  // who have created this post
+  photoUTL, // image url
+  caption, // caption
+  createdAt,
+  updatedAt,
+  likes : [], // who have liked this post
+}
+
+Update {
+    user,  // should not be updated
+    photoUTL, // should not be updated
+    caption, // Only caption can be updated
+    createdAt,
+    updatedAt
+}
+
+Delete -> Only the user who created the post can delete it
+
+find -> #as of now show all the posts [later we will show only the posts of the following users]
+** Pagination **
+** Sorting **
+
+# Where to upload the images ?
+OPTION 1: Upload to the server multer 
+OPTION 2: Upload to the cloudinary
+OPTION 3: Upload to the FIREBASE
+
+PROs and CONs of each option
+
+OPTION 1: Upload to the server multer
+PROS : 
+    1. Easy to implement
+CONS :
+    1. Now need to store the images in the server
+
+OPTION 2: Upload to the cloudinary
+PROS : 
+    1. Easy to implement
+    2. No need to store the images in the server
+CONS :
+    1. **Extra time to learn the cloudinary -> 1-2 hours
+
+OPTION 3: Upload to the FIREBASE
+PROS : 
+    1. Easy to implement
+    2. No need to store the images in the server
+CONS :
+    1. Need to firebase account and package which will increare the depenency and bundle size
+

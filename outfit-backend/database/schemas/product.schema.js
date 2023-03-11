@@ -53,6 +53,7 @@ const productSchema = new Schema(
     merchant: {
       type: Schema.Types.ObjectId,
       ref: 'User',
+      required: [true, 'A product must have a merchant'],
     },
   },
   {

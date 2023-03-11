@@ -50,7 +50,7 @@ module.exports.sign_in = async (req, res, next) => {
       return next(new Error('Password is incorrect'));
     }
 
-    const token = generate_token(user._doc);
+    const token = generate_token(user);
 
     res.status(201).json({
       status: 'success',
