@@ -11,7 +11,6 @@ import SendOtp from './pages/auth/send_otp/SendOTP';
 import ResetPassword from './pages/auth/reset_password/ResetPassword';
 
 function App() {
-  
   return (
     <div>
       <Routes>
