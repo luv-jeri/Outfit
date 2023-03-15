@@ -141,3 +141,53 @@ const cancel_request = async (req, res, next) => {
     message: 'Request cancelled',
   });
 };
+
+const unfollow = async (req, res, next) => {
+  const { id } = req.params; // User ID of the user to be unfollowed
+
+  const meUser = await User.findByIdAndUpdate(
+    {
+      _id: req.user._id,
+    },
+    {
+      $pull: {
+        following: id,
+      },
+    }
+  );
+
+  const otherUser = await User.findByIdAndUpdate(
+    {
+      _id: id,
+    },
+    {
+      $pull: {
+        followers: req.user._id,
+      },
+    }
+  );
+};
+
+const get_followers = async (req, res, next) => {
+  const followers = await User.findById(req.user._id).select('followers').populate({
+    path: 'followers',
+    select: 'name photo _id',
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: followers,
+  });
+};
+
+const get_following = async (req, res, next) => {
+  const following = await User.findById(req.user._id).select('following').populate({
+    path: 'following',
+    select: 'name photo _id',
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: following,
+  });
+}
